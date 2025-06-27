@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Preparatorio ANDE - Categoría B</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a252f 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .electric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .electric-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            animation: electric-flow 3s infinite;
+        }
+
+        @keyframes electric-flow {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100vw); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 215, 0, 0.1));
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            color: #cbd5e0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .module-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .module-card:hover::before {
+            left: 100%;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .module-icon {
+            font-size: 3rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .module-description {
+            color: #cbd5e0;
+            text-align: center;
+        }
+
+        .content-section {
+            display: none;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(15px);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #ffd700);
+            border-radius: 2px;
+        }
+
+        .subsection {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .subsection h3 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .subsection h4 {
+            color: #00d4ff;
+            font-size: 1.4rem;
+            margin: 25px 0 15px 0;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 215, 0, 0.1));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            text-align: center;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .example-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .example-title {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .circuit-diagram {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            background: rgba(15, 20, 25, 0.8);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00d4ff;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .key-points {
+            background: rgba(220, 38, 127, 0.1);
+            border: 2px solid rgba(220, 38, 127, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .key-points h4 {
+            color: #dc267f;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .problems-section {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .problems-section h4 {
+            color: #22c55e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #00d4ff, #0ea5e9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #cbd5e0;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(0, 212, 255, 0.2));
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .highlight-blue {
+            background-color: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+        
+        .highlight-green-yellow {
+            background-color: rgba(163, 230, 53, 0.2);
+            color: #a3e635;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box h4 {
+            color: #ef4444;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-card {
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .info-card h4 { margin-bottom: 15px; font-size: 1.3rem; }
+        .info-card p { font-size: 0.95rem; }
+        .info-card .icon { font-size: 3rem; margin-bottom: 15px; }
+        .info-card .formula { font-family: 'Courier New', monospace; font-size: 1.1rem; margin-top: 15px; padding: 10px; border-radius: 5px; }
+
+        .blue-card { background: rgba(0, 212, 255, 0.1); border: 1px solid #00d4ff; }
+        .yellow-card { background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; }
+        .green-card { background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; }
+        .red-card { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; }
+        .purple-card { background: rgba(147, 51, 234, 0.1); border: 1px solid #9333ea; }
+
+        .blue-card h4 { color: #00d4ff; }
+        .yellow-card h4 { color: #ffd700; }
+        .green-card h4 { color: #22c55e; }
+        .red-card h4 { color: #ef4444; }
+        .purple-card h4 { color: #9333ea; }
+        .blue-card .formula { background-color: rgba(0, 212, 255, 0.1); }
+        .yellow-card .formula { background-color: rgba(255, 215, 0, 0.1); }
+        .green-card .formula { background-color: rgba(34, 197, 94, 0.1); }
+        .purple-card .formula { background-color: rgba(147, 51, 234, 0.1); }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            color: #94a3b8;
+        }
+
+        .footer p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00d4ff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .nav-modules { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+            .content-section { padding: 25px; }
+            .subsection { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="electric-bg">
+        <div class="electric-line" style="top: 10%; animation-delay: 0s;"></div>
+        <div class="electric-line" style="top: 30%; animation-delay: 1s;"></div>
+        <div class="electric-line" style="top: 50%; animation-delay: 2s;"></div>
+        <div class="electric-line" style="top: 70%; animation-delay: 0.5s;"></div>
+        <div class="electric-line" style="top: 90%; animation-delay: 1.5s;"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1>⚡ Curso Preparatorio ANDE ⚡</h1>
+            <p>Examen Categoría B - Instalaciones Eléctricas de Baja Tensión</p>
+        </header>
+
+        <main id="main-menu" class="nav-modules">
+            <div class="module-card" onclick="showModule('module1')">
+                <div class="module-icon">💡</div>
+                <div class="module-title">Módulo 1</div>
+                <div class="module-description">Fundamentos y Magnitudes</div>
+            </div>
+            
+            <div class="module-card" onclick="showModule('module2')">
+                <div class="module-icon">🔧</div>
+                <div class="module-title">Módulo 2</div>
+                <div class="module-description">Materiales y Componentes</div>
+            </div>
+            
+            <div class="module-card" onclick="showModule('module3')">
+                <div class="module-icon">🏠</div>
+                <div class="module-title">Módulo 3</div>
+                <div class="module-description">Instalaciones e Interiores</div>
+            </div>
+            
+            <div class="module-card" onclick="showModule('module4')">
+                <div class="module-icon">📋</div>
+                <div class="module-title">Módulo 4</div>
+                <div class="module-description">Reglamentaciones ANDE</div>
+            </div>
+            
+            <div class="module-card" onclick="showModule('module5')">
+                <div class="module-icon">🛡️</div>
+                <div class="module-title">Módulo 5</div>
+                <div class="module-description">Seguridad y Primeros Auxilios</div>
+            </div>
+            
+            <div class="module-card" onclick="showModule('module6')">
+                <div class="module-icon">📊</div>
+                <div class="module-title">Módulo 6</div>
+                <div class="module-description">Mediciones e Instrumentación</div>
+            </div>
+        </main>
+
+        <!-- Módulo 1 -->
+        <section id="module1" class="content-section">
+            <button class="back-btn" onclick="showMainMenu()">← Volver al Menú</button>
+            <h2 class="section-title">Módulo 1: Fundamentos y Magnitudes</h2>
+            
+            <div class="subsection">
+                <h3>💡 1.1 Conceptos Básicos y Ley de Ohm</h3>
+                <p>La base de toda la electricidad se puede entender con una simple analogía hidráulica:</p>
+                <div class="grid-layout">
+                    <div class="info-card purple-card">
+                        <div class="icon">💧</div><h4>Voltaje (V)</h4><p>La <strong>presión</strong> del agua. Es la fuerza que empuja a los electrones. Medido en <strong>Voltios</strong>.</p>
+                    </div>
+                    <div class="info-card blue-card">
+                        <div class="icon">🌊</div><h4>Corriente (I)</h4><p>El <strong>caudal</strong> de agua. Es el flujo de electrones. Medida en <strong>Amperios</strong>.</p>
+                    </div>
+                    <div class="info-card yellow-card">
+                        <div class="icon">🧱</div><h4>Resistencia (R)</h4><p>La <strong>obstrucción</strong> en la tubería. Es la oposición al flujo. Medida en <strong>Ohmios (Ω)</strong>.</p>
+                    </div>
+                </div>
+                <div class="formula-box">V = I × R    |    I = V / R    |    R = V / I</div>
+            </div>
+
+            <div class="subsection">
+                <h3>🍺 1.2 Potencia Eléctrica y Factor de Potencia (FP)</h3>
+                <p>En Corriente Alterna, la potencia tiene tres componentes, como un vaso de cerveza:</p>
+                <div class="grid-layout">
+                    <div class="info-card green-card"><div class="icon">🍺</div><h4>Potencia Activa (P)</h4><p>El líquido. Realiza el trabajo útil (luz, calor). Medida en <strong>Vatios (W)</strong>.</p></div>
+                    <div class="info-card yellow-card"><div class="icon">🫧</div><h4>Potencia Reactiva (Q)</h4><p>La espuma. Necesaria para campos magnéticos (motores). Medida en <strong>Volt-Amperios Reactivos (VAr)</strong>.</p></div>
+                    <div class="info-card red-card"><div class="icon">🍻</div><h4>Potencia Aparente (S)</h4><p>El vaso entero. La potencia total que entrega ANDE. Medida en <strong>Volt-Amperios (VA)</strong>.</p></div>
+                </div>
+                <div class="formula-box">S² = P² + Q²    |    Factor de Potencia (FP) = P / S</div>
+                <div class="key-points"><h4>🔑 Punto Clave</h4><p>Un buen FP está cerca de 1. La ANDE penaliza a grandes clientes con FP bajo (< 0.92) porque transporta energía "inútil" (reactiva).</p></div>
+            </div>
+
+            <div class="problems-section">
+                <h4>📝 Problemas del Módulo 1</h4>
+                <ol>
+                    <li>Un foco de 100W se conecta a 220V. Calcula su resistencia y corriente.</li>
+                    <li>Un motor consume 5 kVA (S) con un FP de 0.8. Calcula su potencia activa (P) y reactiva (Q).</li>
+                    <li>Un interruptor protege un circuito con 16A. ¿Cuál es la máxima potencia (P) que se puede conectar en 220V?</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Módulo 2 -->
+        <section id="module2" class="content-section">
+            <button class="back-btn" onclick="showMainMenu()">← Volver al Menú</button>
+            <h2 class="section-title">Módulo 2: Materiales y Componentes</h2>
+            
+            <div class="subsection">
+                <h3>🔧 2.1 Conductores y Aislamientos</h3>
+                <p>El conductor es la autopista de la electricidad. Su sección y aislamiento son cruciales.</p>
+                <h4>Tipos de Aislamiento</h4>
+                <ul>
+                    <li><span class="highlight">PVC:</span> Temp. máx. <strong>70°C</strong>. El estándar para uso general, más económico.</li>
+                    <li><span class="highlight-blue">XLPE:</span> Temp. máx. <strong>90°C</strong>. Más robusto, soporta más corriente para la misma sección. Ideal para alimentadores principales.</li>
+                </ul>
+                <div class="formula-box">Capacidad Real = Capacidad de Tabla × Factor de Temperatura × Factor de Agrupamiento</div>
+                <div class="example-box"><div class="example-title">💡 Ejemplo: Cálculo de Ampacidad Real</div><p>Un cable de 6mm² (PVC, 41A de tabla) en un caño con 3 circuitos (FdA=0.7) a 40°C (FdT=0.87):<br>Capacidad Real = 41A × 0.87 × 0.70 = <span class="highlight">24.99 A</span>. ¡Apenas suficiente para una ducha de 25A!</p></div>
+            </div>
+
+            <div class="subsection">
+                <h3>🛡️ 2.2 Aparatos de Protección</h3>
+                <p>Dos dispositivos OBLIGATORIOS con funciones TOTALMENTE diferentes.</p>
+                <div class="grid-layout">
+                    <div class="info-card blue-card"><div class="icon">⚙️</div><h4>Interruptor Termomagnético (MCB)</h4><p><strong>Protege la INSTALACIÓN</strong> (cables, equipos) contra incendios.</p><ul><li><strong>Térmico:</strong> Detecta sobrecargas lentas.</li><li><strong>Magnético:</strong> Detecta cortocircuitos instantáneos.</li></ul></div>
+                    <div class="info-card yellow-card"><div class="icon">❤️</div><h4>Interruptor Diferencial (RCD)</h4><p><strong>Protege a las PERSONAS</strong> contra choques eléctricos.</p><ul><li>Detecta fugas de corriente a tierra.</li><li>Sensibilidad obligatoria para viviendas: <strong class="highlight">30 mA</strong>.</li></ul></div>
+                </div>
+                 <div class="warning-box"><h4>⚠️ ¡Nunca!</h4><p>Uno no reemplaza al otro. Una instalación segura DEBE tener ambos.</p></div>
+            </div>
+            
+            <div class="problems-section">
+                <h4>📝 Problemas del Módulo 2</h4>
+                <ol>
+                    <li>¿Por qué un interruptor diferencial de 30mA es vital en baños y cocinas?</li>
+                    <li>¿Qué dos factores de corrección de ampacidad se deben considerar para 3 cables en un caño a 40°C?</li>
+                    <li>¿Cuál es la función del cable de color verde-amarillo y a dónde se conecta?</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Módulo 3 -->
+        <section id="module3" class="content-section">
+            <button class="back-btn" onclick="showMainMenu()">← Volver al Menú</button>
+            <h2 class="section-title">Módulo 3: Instalaciones Interiores y Acometidas</h2>
+            
+            <div class="subsection">
+                <h3>📐 3.1 Diseño: Ampacidad vs. Caída de Tensión</h3>
+                <p>Al elegir un conductor, hay dos criterios. Debes cumplir con el MÁS EXIGENTE.</p>
+                <div class="grid-layout">
+                    <div class="info-card blue-card"><div class="icon">🔥</div><h4>Criterio de Ampacidad</h4><p>El cable debe ser lo suficientemente grueso para no sobrecalentarse con la corriente del circuito.</p></div>
+                    <div class="info-card purple-card"><div class="icon">📉</div><h4>Criterio de Caída de Tensión (ΔV)</h4><p>Para cables largos, el cable debe ser grueso para que no se "pierda" mucho voltaje en el camino.</p></div>
+                </div>
+                <div class="key-points"><h4>🔑 Límites de ΔV (RIBT-ANDE)</h4><ul><li>Circuitos de Iluminación: <strong>3%</strong></li><li>Otros Usos (Fuerza): <strong>5%</strong></li></ul></div>
+                <div class="formula-box">ΔV = (2 × L × I × ρ) / S   <small>(ρ_cobre ≈ 0.0178)</small></div>
+            </div>
+
+            <div class="subsection">
+                <h3>🔗 3.2 Acometida en Baja Tensión</h3>
+                <p>La acometida es la frontera entre la responsabilidad de la ANDE y la del usuario.</p>
+                <div class="circuit-diagram" style="flex-direction: column; gap: 15px;">
+                    <div>POSTE ANDE ➡️ CABLE ACOMETIDA ➡️</div>
+                    <div style="border: 2px dashed #ffd700; padding: 15px; border-radius: 10px;">
+                        CAJA MEDIDOR (Propiedad ANDE)<br>
+                        --- FRONTERA DE RESPONSABILIDAD ---<br>
+                        CAJA TOMA / INT. PRINCIPAL (Propiedad Usuario)
+                    </div>
+                    <div>➡️ TABLERO INTERIOR</div>
+                </div>
+                 <div class="warning-box"><h4>⚠️ Responsabilidad del Usuario</h4><p>Desde los bornes de salida del medidor hacia adentro, toda la instalación, incluyendo el interruptor principal y la puesta a tierra, es responsabilidad del propietario y su electricista matriculado.</p></div>
+            </div>
+
+            <div class="problems-section">
+                <h4>📝 Problemas del Módulo 3</h4>
+                <ol>
+                    <li>Un A.A. (16A) está a 50 metros del tablero. Un cable de 2.5mm² soporta la corriente, pero ¿cumple con la caída de tensión del 5%? (Calcula).</li>
+                    <li>Una vivienda tiene una demanda de 8500 W. ¿Qué corriente total consume en 220V? ¿Qué interruptor principal (32A, 40A, 50A) elegirías?</li>
+                    <li>Dibuja un esquema unifilar simple mostrando: Medidor, Interruptor Principal, ID General y 2 MCB para circuitos separados.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Módulo 4 -->
+        <section id="module4" class="content-section">
+            <button class="back-btn" onclick="showMainMenu()">← Volver al Menú</button>
+            <h2 class="section-title">Módulo 4: Reglamentaciones ANDE (RIBT)</h2>
+            <div class="warning-box"><h4>⚠️ ¡Módulo Crítico!</h4><p>Las respuestas aquí no son de opinión, son de reglamento. Estudia el RIBT-ANDE.</p></div>
+            
+            <div class="subsection">
+                <h3>🎨 4.1 Secciones Mínimas y Código de Colores</h3>
+                <p>Memorizar estos valores es fundamental. Son preguntas frecuentes.</p>
+                <div class="grid-layout">
+                    <div class="info-card blue-card"><h4>🔵 Neutro</h4><div class="icon">🔵</div><p>Siempre <strong>AZUL CLARO</strong></p></div>
+                    <div class="info-card green-card"><h4>🟢/🟡 Tierra</h4><div class="icon">🌍</div><p>Siempre <strong>VERDE Y AMARILLO</strong></p></div>
+                    <div class="info-card red-card"><h4>🔴⚫🟤 Fase</h4><div class="icon">⚡</div><p><strong>NEGRO, MARRÓN o ROJO</strong></p></div>
+                </div>
+                <h4>Secciones Mínimas (Cobre)</h4>
+                <ul>
+                    <li>Circuitos de Iluminación: <span class="highlight">1.5 mm²</span></li>
+                    <li>Circuitos de Tomas de Uso General: <span class="highlight">2.5 mm²</span></li>
+                    <li>Circuitos de Tomas de Uso Especial (A.A, Cocina): <span class="highlight">2.5 mm²</span> (Mínimo, se calcula)</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>🛡️ 4.2 Protección contra Contactos</h3>
+                <div class="grid-layout">
+                    <div class="info-card purple-card"><div class="icon">👆</div><h4>Contacto Directo</h4><p>Tocar una parte que <strong>normalmente tiene tensión</strong> (cable pelado).</p><p><strong>Protección:</strong> Aislamiento, barreras, cajas (protección pasiva).</p></div>
+                    <div class="info-card yellow-card"><div class="icon">🖐️</div><h4>Contacto Indirecto</h4><p>Tocar una carcasa metálica que se energizó <strong>por un fallo</strong>.</p><p><strong>Protección:</strong> Puesta a Tierra + Interruptor Diferencial (protección activa).</p></div>
+                </div>
+                <div class="key-points"><h4>🔑 Esquema Obligatorio</h4><p>El RIBT-ANDE exige el esquema <strong class="highlight-blue">TT</strong>: Puesta a tierra del usuario independiente de la de ANDE, con uso obligatorio de <strong>Interruptor Diferencial</strong>.</p></div>
+            </div>
+
+            <div class="problems-section">
+                <h4>📝 Problemas del Módulo 4</h4>
+                <ol>
+                    <li>Un electricista instala un circuito de tomas con cable de 2.0 mm². ¿Cumple el reglamento? ¿Por qué?</li>
+                    <li>¿Qué instrumento se usa para verificar que la resistencia de la puesta a tierra cumple con el valor exigido por el RIBT-ANDE?</li>
+                    <li>Un cliente te pide no instalar el cable de tierra para "ahorrar". ¿Cuál es tu respuesta profesional?</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Módulo 5 -->
+        <section id="module5" class="content-section">
+            <button class="back-btn" onclick="showMainMenu()">← Volver al Menú</button>
+            <h2 class="section-title">Módulo 5: Seguridad y Primeros Auxilios</h2>
+            
+            <div class="subsection">
+                <h3>📜 5.1 Las 5 Reglas de Oro</h3>
+                <p>Procedimiento OBLIGATORIO y SECUENCIAL para trabajar sin tensión. El orden es crucial.</p>
+                <div class="grid-layout" style="grid-template-columns: 1fr;">
+                    <div class="info-card blue-card"><h4>1. Desconectar</h4><p>Abrir todas las fuentes de tensión. Corte efectivo.</p></div>
+                    <div class="info-card yellow-card"><h4>2. Bloquear y Señalizar</h4><p>Poner candado y etiqueta (LOTO). Impedir la reconexión.</p></div>
+                    <div class="info-card red-card"><h4>3. Verificar Ausencia de Tensión</h4><p>Con un instrumento, comprobar en el punto de trabajo. ¡Nunca confíes!</p></div>
+                    <div class="info-card green-card"><h4>4. Poner a Tierra y en Cortocircuito</h4><p>Protección contra reconexión accidental.</p></div>
+                    <div class="info-card purple-card"><h4>5. Delimitar y Señalizar la Zona</h4><p>Usar conos y cintas para advertir a terceros.</p></div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>🚑 5.2 Primeros Auxilios (P.A.S.)</h3>
+                <p>En caso de accidente eléctrico, actúa con calma y sigue estos pasos.</p>
+                <div class="warning-box"><h4>1. Proteger</h4><p><strong>¡Tu seguridad primero! NUNCA toques a la víctima directamente.</strong> Corta la corriente desde el interruptor principal o usa un objeto seco y no conductor para separar a la víctima.</p></div>
+                <div class="example-box"><h4>2. Avisar</h4><p>Llama a emergencias (Bomberos 132 / SEME 141) e indica claramente que es un <strong>accidente eléctrico</strong>.</p></div>
+                <div class="key-points"><h4>3. Socorrer</h4><p>Solo si la escena es segura. Comprueba si respira. Si no respira y estás capacitado, inicia RCP. Cubre las quemaduras con paños limpios y húmedos.</p></div>
+            </div>
+
+            <div class="problems-section">
+                <h4>📝 Problemas del Módulo 5</h4>
+                <ol>
+                    <li>¿Cuál es la primera acción si un compañero queda "pegado" a un cable?</li>
+                    <li>Unos guantes dieléctricos, ¿son un Equipo de Protección Personal (EPP) o Colectiva (EPC)?</li>
+                    <li>¿Por qué es crucial el paso 3 (Verificar Ausencia de Tensión) aunque ya hayas bloqueado el interruptor?</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Módulo 6 -->
+        <section id="module6" class="content-section">
+            <button class="back-btn" onclick="showMainMenu()">← Volver al Menú</button>
+            <h2 class="section-title">Módulo 6: Mediciones e Instrumentación</h2>
+            
+            <div class="subsection">
+                <h3>📊 6.1 Instrumentos Clave del Electricista</h3>
+                <p>Cada instrumento tiene una función específica y un modo de uso correcto.</p>
+                <div class="grid-layout">
+                    <div class="info-card blue-card"><div class="icon"> multimeter </div><h4>Multímetro</h4><p>Mide Tensión (en paralelo), Resistencia y Continuidad (sin tensión).</p></div>
+                    <div class="info-card red-card"><div class="icon"> clamp meter </div><h4>Pinza Amperimétrica</h4><p>Mide Corriente (Amperios) sin cortar el circuito. Abraza <strong>un solo</strong> conductor.</p></div>
+                    <div class="info-card green-card"><div class="icon"> earth tester </div><h4>Telurímetro</h4><p>Mide la resistencia de la Puesta a Tierra (jabalina). Indispensable para certificar una PAT.</p></div>
+                    <div class="info-card purple-card"><div class="icon"> insulation tester </div><h4>Megóhmetro</h4><p>Mide la resistencia de AISLAMIENTO de los cables. Detecta fugas y fallas.</p></div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>🔍 6.2 Procedimientos de Medición</h3>
+                <h4>¿Cómo medir correctamente?</h4>
+                <ul>
+                    <li><strong>Tensión (V):</strong> Con el multímetro, en <span class="highlight">PARALELO</span> al componente (ej. en los dos agujeros de una toma).</li>
+                    <li><strong>Corriente (A):</strong> Con la pinza, abrazando <span class="highlight">UN SOLO CABLE</span> (fase o neutro). Si abrazas los dos, la lectura será CERO.</li>
+                    <li><strong>Resistencia (Ω) / Continuidad:</strong> Con el multímetro, <span class="highlight-red">SIEMPRE SIN TENSIÓN</span>. Sirve para ver si un fusible está quemado.</li>
+                    <li><strong>Aislamiento (MΩ):</strong> Con el megóhmetro, <span class="highlight-red">SIN TENSIÓN Y CON CARGAS DESCONECTADAS</span> para no dañarlas.</li>
+                </ul>
+                <div class="example-box"><div class="example-title">💡 Ejemplo Práctico: Fuga de Corriente</div><p>Si un diferencial salta, usa el megóhmetro. Desconecta todo y mide entre Fase y Tierra. Si la lectura es baja (ej. 0.5 MΩ), el problema está en el cableado. Si es muy alta (infinito), el problema está en uno de los aparatos que desconectaste.</p></div>
+            </div>
+
+            <div class="problems-section">
+                <h4>📝 Problemas del Módulo 6</h4>
+                <ol>
+                    <li>¿Por qué una pinza amperimétrica marca 0A si abraza un cable con fase y neutro juntos?</li>
+                    <li>Quieres saber si un fusible está quemado. ¿Qué función del multímetro usas y qué medida de seguridad tomas primero?</li>
+                    <li>Una medición de aislamiento con un megóhmetro da un valor de "OL" (Over Load) o infinito. ¿Es un resultado bueno o malo?</li>
+                </ol>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>¡Mucho Éxito en tu Examen!</p>
+            <span>Material de estudio basado en el temario oficial de la ANDE.</span>
+        </footer>
+    </div>
+
+    <script>
+        const mainMenu = document.getElementById('main-menu');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        function showModule(moduleId) {
+            mainMenu.style.display = 'none';
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const selectedModule = document.getElementById(moduleId);
+            if (selectedModule) {
+                selectedModule.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function showMainMenu() {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            mainMenu.style.display = 'grid';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
